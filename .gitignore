@@ -1,0 +1,21 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+
+# Private ML datasets and generated model artifacts
+ml/ball-detector/dataset/**
+!ml/ball-detector/dataset/.gitkeep
+ml/ball-detector/datasets/**
+!ml/ball-detector/datasets/.gitkeep
+ml/ball-detector/outputs/**
+!ml/ball-detector/outputs/.gitkeep
+ml/ball-detector/runs/
+ml/ball-detector/exports/
+ml/ball-detector/models/
+**/__pycache__/
+*.pyc

@@ -1,0 +1,93 @@
+import tailwindcss from '@tailwindcss/vite';
+import react from '@vitejs/plugin-react';
+import path from 'path';
+import {defineConfig} from 'vite';
+import { VitePWA } from 'vite-plugin-pwa';
+
+export default defineConfig(() => {
+  return {
+    plugins: [
+      react(),
+      tailwindcss(),
+      VitePWA({
+        registerType: 'autoUpdate',
+        includeAssets: ['icons/icon-192.png', 'icons/icon-512.png'],
+        manifest: {
+          name: 'BasketMotion AI',
+          short_name: 'BasketMotion',
+          description: 'AI Basketball Performance Intelligence for athletes, coaches, clubs, scouting, and match review.',
+          start_url: '/',
+          scope: '/',
+          display: 'standalone',
+          orientation: 'any',
+          background_color: '#0A0A0B',
+          theme_color: '#FF6B00',
+          icons: [
+            {
+              src: '/icons/icon-192.png',
+              sizes: '192x192',
+              type: 'image/png',
+              purpose: 'any maskable',
+            },
+            {
+              src: '/icons/icon-512.png',
+              sizes: '512x512',
+              type: 'image/png',
+              purpose: 'any maskable',
+            },
+          ],
+        },
+        workbox: {
+          cleanupOutdatedCaches: true,
+          clientsClaim: true,
+          skipWaiting: true,
+          navigateFallback: '/index.html',
+          globPatterns: ['**/*.{js,css,html,png,svg,ico,webmanifest}'],
+          globIgnores: ['**/opencv-*.js'],
+          maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
+          runtimeCaching: [
+            {
+              urlPattern: /\/assets\/opencv-[^/]+\.js$/i,
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'basketmotion-opencv-runtime',
+                expiration: { maxEntries: 1, maxAgeSeconds: 60 * 60 * 24 * 30 },
+              },
+            },
+          ],
+        },
+      }),
+    ],
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, '.'),
+      },
+    },
+    server: {
+      // HMR is disabled in AI Studio via DISABLE_HMR env var.
+      // Do not modifyâfile watching is disabled to prevent flickering during agent edits.
+      hmr: process.env.DISABLE_HMR !== 'true',
+    },
+    worker: {
+      format: 'es' as const,
+    },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            react: ['react', 'react-dom'],
+            firebase: ['firebase/app', 'firebase/auth', 'firebase/firestore', 'firebase/storage'],
+            tensorflow: [
+              '@tensorflow/tfjs-core',
+              '@tensorflow/tfjs-backend-webgl',
+              '@tensorflow/tfjs-converter',
+              '@tensorflow-models/pose-detection',
+              '@tensorflow-models/coco-ssd',
+            ],
+            opencv: ['@techstark/opencv-js'],
+          },
+        },
+      },
+    },
+  };
+});

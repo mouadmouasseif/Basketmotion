@@ -1,11 +1,33 @@
-<div align="center">
+# BasketMotion AI
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+BasketMotion AI is the basketball product in the Motion ecosystem:
 
-  <h1>Built with AI Studio</h2>
+- SailMotion AI
+- SailMotion Race
+- RowMotion AI
+- RowMotion Race
+- BasketMotion AI
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+Tagline: AI Basketball Performance Intelligence.
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+## Current Scope
 
-</div>
+BasketMotion AI provides athlete analysis, training sessions, coach workspace foundations, club dashboards, elite analytics previews, match intelligence review foundations, and professional ecosystem architecture.
+
+The project is migrated from the legacy MasterHoop naming without deleting historical Firebase or local browser data. Legacy identifiers remain readable where they are part of existing data or Firebase project configuration.
+
+## Scripts
+
+- `npm run dev`
+- `npm run typecheck`
+- `npm run lint`
+- `npm run test`
+- `npm run build`
+
+## Implementation Status
+
+Sprint 1 is focused on rebrand, navigation, roles, permissions, migration compatibility, and documentation.
+
+Sprint 2 is focused on the coach platform: athletes, timestamped comments, video drawings, drills, missions, training plans, reports, and rule-based AI Coach recommendations.
+
+Features that require a specialized model, backend worker, wearable API, payment provider, or licensed reference data are explicitly marked as preview, experimental, or requiring configuration.

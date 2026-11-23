@@ -1,0 +1,224 @@
+import type { User as FirebaseUser } from 'firebase/auth';
+import type { PoseMetrics } from '@/src/lib/poseDetection';
+import type { AccountStatus, UserRole } from '@/src/auth/types';
+export interface Shot {
+  x?: number;
+  y?: number;
+  z?: number;
+  shotType?: string;
+  outcome: 'made' | 'missed' | 'unknown';
+  source?: string;
+  confidence?: number;
+  status?: 'measured' | 'estimated' | 'unavailable';
+}
+export interface Session {
+  id: string;
+  userId: string;
+  timestamp?: any;
+  createdAt?: any;
+  duration: string | number;
+  videoUrl: string;
+  thumbnail?: string;
+  thumbnailUrl?: string;
+  accuracy?: number;
+  drillName?: string;
+  score?: number;
+  aiFeedback?: string;
+  strengths?: string[];
+  weaknesses?: string[];
+  suggestions?: string[];
+  metrics?: Record<string, unknown>;
+  shots?: Shot[];
+  madeShots?: number;
+  missedShots?: number;
+  dribbleCount?: number;
+  avgPower?: number;
+  notes?: string;
+}
+export interface UserProfile {
+  id?: string;
+  userId: string;
+  uid?: string;
+  name: string;
+  username?: string;
+  fullName?: string;
+  photoURL?: string;
+  email?: string;
+  displayName?: string;
+  role?: UserRole;
+  clubId?: string;
+  coachId?: string;
+  athleteIds?: string[];
+  accountStatus?: AccountStatus;
+  createdAt?: unknown;
+  updatedAt?: unknown;
+  uniquePlayerId?: string;
+  qrCode?: string;
+  followers?: number;
+  following?: number;
+  teams?: string[];
+  age: number;
+  height: number;
+  weight: number;
+  totalSessions: number;
+  avgAccuracy: number;
+  bestAccuracy: number;
+  preferredShot: string;
+  basketballPosition?: string;
+}
+export type ActiveTab = 'live' | 'games' | 'friends' | 'teams' | 'leaderboard' | 'notifications' | 'stats' | 'coach' | 'history' | 'drills' | 'profile';
+export type TrainingMode = 'FREESTYLE' | 'TARGETED';
+export type SessionToSave = { blob: Blob; metrics: PoseMetrics } | null;
+export type AppUser = FirebaseUser | null;
+
+export type GameMode = '1v1' | '3v3' | '5v5';
+export type DrillCategory = 'Shooting' | 'Dribbling' | 'Finishing' | 'Defense' | 'Footwork' | 'Conditioning';
+
+export type PlayerAnalysisReport = {
+  player: string;
+  offense_score: number | null;
+  defense_score: number | null;
+  speed: number | null;
+  distance: number | null;
+  weaknesses: string[];
+  recommendations: string[];
+};
+
+export type TrainingHistoryItem = {
+  id: string;
+  date: string;
+  type: string;
+  player: string;
+  video: string;
+  analysis: PlayerAnalysisReport;
+  drillsCompleted: string[];
+  notes: string;
+};
+
+export type PlayerStats = {
+  shots: number;
+  madeShots: number;
+  assists: number;
+  rebounds: number;
+  steals: number;
+  blocks: number;
+  turnovers: number;
+  minutesPlayed: number;
+};
+
+export type SocialPlayer = {
+  uid: string;
+  username: string;
+  fullName: string;
+  photoURL: string;
+  email: string;
+  uniquePlayerId: string;
+  qrCode: string;
+  followers: number;
+  following: number;
+  teams: string[];
+  level: string;
+  lastActive: string;
+  stats: PlayerStats;
+};
+
+export type FriendRequestStatus = 'pending' | 'accepted' | 'blocked' | 'friend_request_pending' | 'friend_request_accepted' | 'friend_request_rejected';
+
+export type TeamProfile = {
+  teamId: string;
+  teamName: string;
+  logo: string;
+  color: string;
+  captain: string;
+  players: SocialPlayer[];
+  memberUids?: string[];
+  pendingInvites?: string[];
+  mode: '3v3' | '5v5';
+};
+
+export type SyncedMatchResult = {
+  matchId: string;
+  playerA: string;
+  playerB: string;
+  winner: string;
+  score: string;
+  video: string;
+  stats: Record<string, PlayerStats>;
+};
+
+export type MatchType = '1vs1' | '3vs3' | '5vs5';
+export type MatchStatus = 'waiting' | 'active' | 'finished' | 'match_invite_pending' | 'match_ready' | 'match_live' | 'match_finished' | 'match_cancelled';
+
+export type MatchTimelineEvent = {
+  id: string;
+  timestamp: number;
+  type: string;
+  playerId: string;
+  team: 'A' | 'B';
+  points?: 2 | 3;
+};
+
+export type MatchStats = PlayerStats & {
+  shotsAttempted: number;
+  shotsMade: number;
+  fieldGoalPercentage: number;
+  offensiveRebounds: number;
+  defensiveRebounds: number;
+};
+
+export type AIMatchRecord = {
+  id: string;
+  type: MatchType;
+  userId: string;
+  playerA?: string;
+  playerB?: string;
+  teamA: string[];
+  teamB: string[];
+  participantUids: string[];
+  createdAt?: any;
+  acceptedAt?: any;
+  finishedAt?: any;
+  status: MatchStatus;
+  score: { A: number; B: number };
+  stats: Record<string, MatchStats>;
+  timeline: MatchTimelineEvent[];
+  videoUrl?: string;
+  reportUrl?: string;
+  aiAnalysis?: Record<string, unknown>;
+};
+
+export type FriendRequest = {
+  id: string;
+  userId: string;
+  fromUid: string;
+  toUid: string;
+  fromPlayerId: string;
+  toPlayerId: string;
+  status: FriendRequestStatus;
+  createdAt?: any;
+};
+
+export type NotificationItem = {
+  id: string;
+  userId: string;
+  title: string;
+  body: string;
+  read: boolean;
+  createdAt?: any;
+  matchId?: string;
+  teamId?: string;
+};
+
+export type SharedVideoSession = {
+  id: string;
+  userId: string;
+  ownerUid: string;
+  participantUids: string[];
+  videoUrl: string;
+  thumbnailUrl?: string;
+  analysisId?: string;
+  reportId?: string;
+  matchId?: string;
+  match?: SyncedMatchResult | null;
+  createdAt?: any;
+};

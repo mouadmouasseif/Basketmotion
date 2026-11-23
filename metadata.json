@@ -1,0 +1,9 @@
+{
+  "name": "BasketMotion AI",
+  "description": "AI Basketball Performance Intelligence for athletes, coaches, clubs, scouting, and match review.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": []
+}

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 2,
+  "migration": "Legacy documents with userId remain readable; new analyses prefer ownerId and athleteId.",
+  "collections": {
+    "users/{userId}": {
+      "required": ["userId", "role", "accountStatus"],
+      "roles": ["super_admin", "club_admin", "coach", "athlete"],
+      "protectedFields": ["userId", "role", "clubId", "coachId", "accountStatus"]
+    },
+    "coachAthleteLinks/{coachId}_{athleteId}": {
+      "required": ["coachId", "athleteId", "status"],
+      "status": ["pending", "active", "declined", "revoked"]
+    },
+    "invitations/{invitationId}": {
+      "required": ["type", "senderId", "status", "expiresAt", "createdAt"]
+    },
+    "analyses/{analysisId}": {
+      "requiredForNewDocuments": ["ownerId", "athleteId", "source", "executionMode", "status", "createdAt", "updatedAt"],
+      "legacyOwnerField": "userId"
+    },
+    "modelRegistry/{modelId}": {
+      "required": ["name", "task", "version", "format", "status"]
+    },
+    "auditLogs/{logId}": {
+      "clientWrite": false,
+      "clientRead": "super_admin only"
+    }
+  }
+}
